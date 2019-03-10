@@ -9,6 +9,8 @@ type Container struct {
 	PaddingTop    int
 	PaddingRight  int
 	PaddingBottom int
+
+	BackgroundColor Color
 }
 
 func NewContainer() View {
@@ -16,8 +18,16 @@ func NewContainer() View {
 }
 
 func (v *Container) Render(g graphics.Graphics) {
-	newX := g.GetX() + v.MarginLeft + v.PaddingLeft + v.Width + v.PaddingRight + v.MarginRight
-	newY := g.GetY() + v.MarginTop + v.PaddingTop + v.Height + v.PaddingBottom + v.MarginBottom
+	x := g.GetX() + v.MarginLeft
+	y := g.GetY() + v.MarginTop
+
+	width := v.PaddingLeft + v.Width + v.PaddingRight
+	height := v.PaddingTop + v.Height + v.PaddingBottom
+
+	g.FillRect(x, y, width, height)
+
+	newX := x + v.PaddingLeft + v.Width + v.PaddingRight + v.MarginRight
+	newY := y + v.PaddingTop + v.Height + v.PaddingBottom + v.MarginBottom
 
 	g.MoveTo(newX, newY)
 }
