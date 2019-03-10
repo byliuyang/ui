@@ -10,6 +10,14 @@ type MockGraphics struct {
 	y int
 }
 
+func (g *MockGraphics) Clear() {
+	g.x = 0
+	g.y = 0
+}
+
+func (g *MockGraphics) FillRect(x int, y int, width int, height int) {
+}
+
 func (g *MockGraphics) GetX() int {
 	return g.x
 }
@@ -38,6 +46,8 @@ func TestView_Render(t *testing.T) {
 		paddingRight  int
 		paddingBottom int
 
+		backgroundColor Color
+
 		testName string
 
 		expectedX int
@@ -56,6 +66,8 @@ func TestView_Render(t *testing.T) {
 			paddingTop:    0,
 			paddingRight:  0,
 			paddingBottom: 0,
+
+			backgroundColor: Color{},
 
 			testName: "width_height",
 
@@ -76,6 +88,8 @@ func TestView_Render(t *testing.T) {
 			paddingRight:  0,
 			paddingBottom: 0,
 
+			backgroundColor: Color{},
+
 			testName: "margin",
 
 			expectedX: 4,
@@ -94,6 +108,8 @@ func TestView_Render(t *testing.T) {
 			paddingTop:    2,
 			paddingRight:  3,
 			paddingBottom: 4,
+
+			backgroundColor: Color{},
 
 			testName: "padding",
 
@@ -119,6 +135,8 @@ func TestView_Render(t *testing.T) {
 				PaddingTop:    testCase.paddingTop,
 				PaddingRight:  testCase.paddingRight,
 				PaddingBottom: testCase.paddingBottom,
+
+				BackgroundColor: testCase.backgroundColor,
 			}
 
 			g := &MockGraphics{
@@ -126,7 +144,11 @@ func TestView_Render(t *testing.T) {
 				y: 0,
 			}
 
+			assert.Equal(t1, 0, g.x)
+			assert.Equal(t1, 0, g.y)
+
 			container.Render(g)
+
 			assert.Equal(t1, testCase.expectedX, g.x)
 			assert.Equal(t1, testCase.expectedY, g.y)
 		})
